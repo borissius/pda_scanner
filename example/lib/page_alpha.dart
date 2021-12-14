@@ -20,7 +20,7 @@ class PageAlphaState extends State<PageAlpha> with PdaListenerMixin<PageAlpha> {
       body: Column(
         children: <Widget>[
           Text('Scanning result: $_code\n'),
-          RaisedButton(
+          ElevatedButton(
             child: Text('Got to Beta'),
             onPressed: () => Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => PageBeta())),
@@ -31,7 +31,7 @@ class PageAlphaState extends State<PageAlpha> with PdaListenerMixin<PageAlpha> {
   }
 
   @override
-  void onEvent(Object event) {
+  void onEvent(Object? event) {
     setState(() {
       _code = event;
       print("ChannelPage: $event");

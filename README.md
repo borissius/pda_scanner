@@ -6,6 +6,7 @@
 A Flutter plugin 🛠 to scanning. Ready for PDA 🚀 
 
 [github](https://github.com/leyan95/pda_scanner)
+[github](https://github.com/kazbekbet)
 
 ![pda_scanner.gif](https://upload-images.jianshu.io/upload_images/3646846-16ca17b573a765f2.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/320/format/webp)
 
@@ -15,7 +16,7 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
- pda_scanner: ^0.2.9
+ pda_scanner: ^0.3.0
 ```
 
 ## Supported
@@ -28,13 +29,13 @@ dependencies:
 
 ## Usage
 ```dart
-/// 导入依赖
+/// Example
 import 'package:pda_scanner/pda_source.dart';
 import 'package:pda_scanner/pda_listener_mixin.dart';
 import 'package:pda_scanner/pda_lifecycle_mixin.dart';
 
-/// 自动管理pda生命周期 (自动初始化和自动释放)，使用PdaLifecycleMixin混入app根组件状态。
-/// 如果遇到多混入的情况请手动进行生命周期的初始化 `super.initPdaLifecycle()` 和 释放 `super.disposePdaLifecycle()` 
+/// Automatically manage the pda life cycle (automatic initialization and automatic release), use PdaLifecycleMixin to mix into the app root component state.
+/// If you encounter multiple mixing, please manually initialize the life cycle `super.initPdaLifecycle()` and release `super.disposePdaLifecycle()`
 class RootWidgetState extends State<RootWidget> with PdaLifecycleMixin<RootWidget> {
   @override
   Widget build(BuildContext context) {
@@ -42,8 +43,8 @@ class RootWidgetState extends State<RootWidget> with PdaLifecycleMixin<RootWidge
   }
 }
 
-/// 混入 PdaListenerMixin 监听扫码事件
-/// 如果遇到多混入的情况请手动进行生命周期的初始化 `super.registerPdaListener()` 和 释放 `super.unRegisterPdaListener()` 
+/// Mix into PdaListenerMixin to monitor code scanning events
+/// If you encounter multiple mixing, please manually initialize the life cycle `super.registerPdaListener()` and release `super.unRegisterPdaListener()`
 class PageAlphaState extends State<PageAlpha> with PdaListenerMixin<PageAlpha> {
   var _code;
 
