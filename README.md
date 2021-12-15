@@ -16,7 +16,7 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
- pda_scanner: ^0.3.0
+ pda_scanner_ns: ^0.3.0
 ```
 
 ## Supported
