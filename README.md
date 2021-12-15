@@ -16,16 +16,10 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
- pda_scanner_ns: ^0.3.0
+ pda_scanner:
+    git:
+      url: https://github.com/kazbekbet/pda_scanner
 ```
-
-## Supported
-
--  [x] SEUIC(小码哥)-PDA
--  [x] IData(盈达聚力)-PDA
--  [x] UROVO(优博讯)-PDA
--  [x] HONEYWELL(霍尼韦尔)-PDA
--  [x] PL(攀凌)-PDA
 
 ## Usage
 ```dart
