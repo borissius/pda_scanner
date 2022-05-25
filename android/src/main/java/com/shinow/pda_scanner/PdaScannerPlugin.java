@@ -9,8 +9,12 @@ import android.util.Log;
 
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.PluginRegistry;
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.plugin.common.BinaryMessenger;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 
-public class PdaScannerPlugin implements EventChannel.StreamHandler {
+public class PdaScannerPlugin implements FlutterPlugin, ActivityAware, EventChannel.StreamHandler {
     private static final String CHANNEL = "com.shinow.pda_scanner/plugin";
     private static final String XM_SCAN_ACTION = "com.android.server.scannerservice.broadcast";
     private static final String SHINIOW_SCAN_ACTION = "com.android.server.scannerservice.shinow";
@@ -21,6 +25,9 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
     private static final String HONEYWELL_SCAN_ACTION = "com.honeywell.decode.intent.action.EDIT_DATA";
 
     private static EventChannel.EventSink eventSink;
+
+    private static BinaryMessenger messenger;
+    private static Activity activity;
 
     private static final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
         @Override
@@ -45,7 +52,9 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
         }
     };
 
-    private PdaScannerPlugin(Activity activity) {
+    public PdaScannerPlugin() {}
+
+    public void registerEvents(Activity activity) {
         IntentFilter xmIntentFilter = new IntentFilter();
         xmIntentFilter.addAction(XM_SCAN_ACTION);
         xmIntentFilter.setPriority(Integer.MAX_VALUE);
@@ -82,10 +91,40 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
         activity.registerReceiver(scanReceiver, honeywellIntentFilter);
     }
 
-    public static void registerWith(PluginRegistry.Registrar registrar) {
-        EventChannel channel = new EventChannel(registrar.messenger(), CHANNEL);
-        PdaScannerPlugin plugin = new PdaScannerPlugin(registrar.activity());
-        channel.setStreamHandler(plugin);
+    @Override
+    public void onAttachedToEngine(FlutterPluginBinding binding) {
+        messenger = binding.getBinaryMessenger();
+    }
+
+    @Override
+    public void onDetachedFromEngine(FlutterPluginBinding binding) {
+        onCancel(null);
+    }
+
+    @Override
+    public void onAttachedToActivity(ActivityPluginBinding binding) {
+        activity = binding.getActivity();
+        registerEvents(activity);
+        EventChannel eventChannel = new EventChannel(messenger, CHANNEL);
+        eventChannel.setStreamHandler(this);
+    }
+
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {
+        onCancel(null);
+    }
+
+    @Override
+    public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
+        activity = binding.getActivity();
+        registerEvents(activity);
+        EventChannel eventChannel = new EventChannel(messenger, CHANNEL);
+        eventChannel.setStreamHandler(this);
+    }
+
+    @Override
+    public void onDetachedFromActivity() {
+        onCancel(null);
     }
 
     @Override
