@@ -27,7 +27,6 @@ public class PdaScannerPlugin implements FlutterPlugin, ActivityAware, EventChan
     private static EventChannel.EventSink eventSink;
 
     private static BinaryMessenger messenger;
-    private static Activity activity;
 
     private static final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
         @Override
