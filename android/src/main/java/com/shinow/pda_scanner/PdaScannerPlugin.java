@@ -27,7 +27,6 @@ public class PdaScannerPlugin implements FlutterPlugin, ActivityAware, EventChan
     private static EventChannel.EventSink eventSink;
 
     private static BinaryMessenger messenger;
-    private static Activity activity;
 
     private static final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
         @Override
@@ -101,12 +100,15 @@ public class PdaScannerPlugin implements FlutterPlugin, ActivityAware, EventChan
         onCancel(null);
     }
 
-    @Override
-    public void onAttachedToActivity(ActivityPluginBinding binding) {
-        activity = binding.getActivity();
+    private void onInit(Activity activity) {
         registerEvents(activity);
         EventChannel eventChannel = new EventChannel(messenger, CHANNEL);
         eventChannel.setStreamHandler(this);
+    }
+
+    @Override
+    public void onAttachedToActivity(ActivityPluginBinding binding) {
+        onInit(binding.getActivity());
     }
 
     @Override
@@ -116,10 +118,7 @@ public class PdaScannerPlugin implements FlutterPlugin, ActivityAware, EventChan
 
     @Override
     public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
-        activity = binding.getActivity();
-        registerEvents(activity);
-        EventChannel eventChannel = new EventChannel(messenger, CHANNEL);
-        eventChannel.setStreamHandler(this);
+        onInit(binding.getActivity());
     }
 
     @Override
