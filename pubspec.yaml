@@ -5,10 +5,12 @@ version: 0.3.0
 authors:
   - leyan95 <leyansorosame@gmail.com> - original version
   - kazbekbet <kazbekbet@gmail.com> - null safety migration
+  - borissius <boris.kartapov@gmail.com> - V2 Android embedding migration
 
 homepage:
   - https://github.com/leyan95/pda_scanner
   - https://github.com/kazbekbet
+  - https://github.com/borissius
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
